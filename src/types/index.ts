@@ -57,6 +57,21 @@ export interface User {
   favorites: string[];
 }
 
+export interface SeatingZone {
+  id: string;
+  name: string;
+  frenchName: string;
+  description: string;
+  image: string;
+  suitableFor: string;
+  capacityRange: string;
+  lighting: string;
+  soundscape: string;
+  highlight: string;
+  availableTables: number;
+  atmosphereBadge: string;
+}
+
 export type DeliveryType = 'delivery' | 'pickup' | 'dinein';
 
 export interface Order {
@@ -72,6 +87,7 @@ export interface Order {
   address?: string;
   pickupOrDineinTime?: string;
   guestCount?: number;
+  seatingZone?: string;
   subtotal: number;
   discount: number;
   pointsUsed: number;
@@ -80,3 +96,4 @@ export interface Order {
   paymentMethod: 'credit_card' | 'line_pay' | 'apple_pay' | 'counter';
   paymentStatus: 'paid' | 'pending';
 }
+

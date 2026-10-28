@@ -10,6 +10,7 @@ import { Hero } from './components/Hero';
 import { MenuSection } from './components/MenuSection';
 import { SommelierSection } from './components/SommelierSection';
 import { BrandStory } from './components/BrandStory';
+import { SalonSpacesSection } from './components/SalonSpacesSection';
 import { Footer } from './components/Footer';
 import { ItemCustomizerModal } from './components/ItemCustomizerModal';
 import { CartDrawer } from './components/CartDrawer';
@@ -31,6 +32,7 @@ const MainApp: React.FC = () => {
       <main className="flex-1">
         <Hero />
         <MenuSection />
+        <SalonSpacesSection />
         <SommelierSection />
         <BrandStory />
       </main>

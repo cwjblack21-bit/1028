@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
-import { X, CreditCard, ShieldCheck, Check, Sparkles, MapPin, Calendar, Clock, Users } from 'lucide-react';
+import { X, CreditCard, ShieldCheck, Check, Sparkles, MapPin, Calendar, Clock, Users, Compass } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import { SeatingZoneSelector } from './SeatingZoneSelector';
+import { SALON_SEATING_ZONES } from '../data/seating';
+import { SeatingZone } from '../types';
 
 export const CheckoutModal: React.FC = () => {
   const {
@@ -9,6 +12,7 @@ export const CheckoutModal: React.FC = () => {
     cart,
     cartSubtotal,
     deliveryType,
+    setDeliveryType,
     appliedDiscount,
     user,
     createOrder,
@@ -21,6 +25,7 @@ export const CheckoutModal: React.FC = () => {
   const [deliverySlot, setDeliverySlot] = useState('下午茶精華時段 14:00 - 16:00');
   const [dineinGuests, setDineinGuests] = useState(2);
   const [dineinTime, setDineinTime] = useState('今日午後 14:30');
+  const [selectedZone, setSelectedZone] = useState<SeatingZone>(SALON_SEATING_ZONES[0]);
   const [paymentMethod, setPaymentMethod] = useState<'credit_card' | 'line_pay' | 'apple_pay' | 'counter'>('credit_card');
   const [usePoints, setUsePoints] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -60,6 +65,7 @@ export const CheckoutModal: React.FC = () => {
         address: deliveryType === 'delivery' ? address : undefined,
         pickupOrDineinTime: deliveryType === 'dinein' ? dineinTime : deliverySlot,
         guestCount: deliveryType === 'dinein' ? dineinGuests : undefined,
+        seatingZone: deliveryType === 'dinein' ? selectedZone.name : undefined,
         paymentMethod,
         usePoints,
       });
@@ -148,11 +154,35 @@ export const CheckoutModal: React.FC = () => {
             </div>
           </div>
 
-          {/* Section 2: Delivery Details */}
-          <div className="space-y-3 pt-2 border-t border-[#E8DFC9]">
-            <h3 className="text-xs font-semibold text-[#403429] uppercase tracking-wider">
-              02. {deliveryType === 'delivery' ? '配送地址與時段' : deliveryType === 'pickup' ? '取貨時段與門市' : '沙龍內用預約'}
-            </h3>
+          {/* Section 2: Service Mode & Delivery/Dine-in Details */}
+          <div className="space-y-4 pt-2 border-t border-[#E8DFC9]">
+            <div className="flex items-center justify-between">
+              <h3 className="text-xs font-semibold text-[#403429] uppercase tracking-wider">
+                02. 服務模式與預約細節
+              </h3>
+
+              {/* Mode Switcher Segmented Control */}
+              <div className="flex items-center gap-1 bg-[#E8DFC9] p-0.5 rounded-lg">
+                {[
+                  { id: 'dinein', label: '沙龍內用預約' },
+                  { id: 'delivery', label: '冷鏈外送' },
+                  { id: 'pickup', label: '門市自取' },
+                ].map((mode) => (
+                  <button
+                    key={mode.id}
+                    type="button"
+                    onClick={() => setDeliveryType(mode.id as any)}
+                    className={`px-2.5 py-1 text-[11px] font-medium rounded-md transition-all ${
+                      deliveryType === mode.id
+                        ? 'bg-[#2D241E] text-white shadow-xs'
+                        : 'text-[#615142] hover:text-[#26211E]'
+                    }`}
+                  >
+                    {mode.label}
+                  </button>
+                ))}
+              </div>
+            </div>
 
             {deliveryType === 'delivery' && (
               <div className="space-y-3">
@@ -216,15 +246,15 @@ export const CheckoutModal: React.FC = () => {
             )}
 
             {deliveryType === 'dinein' && (
-              <div className="space-y-3">
+              <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="text-[11px] text-[#695847] block mb-1">預約時間</label>
+                    <label className="text-[11px] text-[#695847] block mb-1">預約入座時間</label>
                     <input
                       type="text"
                       value={dineinTime}
                       onChange={(e) => setDineinTime(e.target.value)}
-                      className="w-full text-xs p-2.5 rounded-xl bg-white border border-[#DDD3C2]"
+                      className="w-full text-xs p-2.5 rounded-xl bg-white border border-[#DDD3C2] text-[#2C2119]"
                     />
                   </div>
 
@@ -239,11 +269,21 @@ export const CheckoutModal: React.FC = () => {
                       <option value={2}>2 位貴賓 (經典雙人窗景茶席)</option>
                       <option value={3}>3 位貴賓 (花園陽光雅席)</option>
                       <option value={4}>4 位貴賓 (凡爾賽長桌沙發席)</option>
+                      <option value={5}>5-6 位貴賓 (圓頂宮廷大席)</option>
                     </select>
                   </div>
                 </div>
+
+                {/* Interactive Seating Zone Selector Component */}
+                <div className="pt-1">
+                  <SeatingZoneSelector
+                    selectedZoneId={selectedZone.id}
+                    onSelectZone={(zone) => setSelectedZone(zone)}
+                  />
+                </div>
+
                 <p className="text-[11px] text-[#8C7A68]">
-                  ※ 內用席位保留 15 分鐘，點餐內容將於入座時依序以純銀三層塔或溫熱骨瓷壺呈上。
+                  ※ 內用席位保留 15 分鐘，抵達沙龍時為您優先引導至【{selectedZone.name}】，點餐內容將依序以純銀三層塔或溫熱骨瓷壺呈上。
                 </p>
               </div>
             )}

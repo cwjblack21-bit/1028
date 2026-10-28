@@ -161,7 +161,7 @@ export const MemberProfileModal: React.FC = () => {
                           ? '專車冷鏈外送'
                           : ord.deliveryType === 'pickup'
                           ? '敦化旗艦門市自取'
-                          : '沙龍內用席位'}
+                          : `沙龍內用 · ${ord.seatingZone || '指定茶席'}`}
                       </div>
                       <div className="flex items-center gap-3">
                         <span className="font-semibold text-sm font-mono tabular-nums text-[#936639]">

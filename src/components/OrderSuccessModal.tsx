@@ -101,6 +101,12 @@ export const OrderSuccessModal: React.FC = () => {
                   : `沙龍內用茶席 (${lastCompletedOrder.guestCount} 位)`}
               </span>
             </div>
+            {lastCompletedOrder.seatingZone && (
+              <div className="flex justify-between">
+                <span className="text-[#877665]">指定座位區</span>
+                <span className="font-semibold text-[#936639]">{lastCompletedOrder.seatingZone}</span>
+              </div>
+            )}
             {lastCompletedOrder.address && (
               <div className="flex justify-between">
                 <span className="text-[#877665]">配送地址</span>

@@ -80,6 +80,12 @@ export const TopBar: React.FC = () => {
             侍茶師推薦
           </a>
           <a
+            href="#spaces"
+            className="hover:text-[#936639] transition-colors whitespace-nowrap shrink-0 hover:underline underline-offset-8 decoration-[#C59B63]/60"
+          >
+            沙龍座席
+          </a>
+          <a
             href="#story"
             className="hover:text-[#936639] transition-colors whitespace-nowrap shrink-0 hover:underline underline-offset-8 decoration-[#C59B63]/60"
           >

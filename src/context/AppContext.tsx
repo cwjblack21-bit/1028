@@ -30,6 +30,7 @@ interface AppContextType {
     address?: string;
     pickupOrDineinTime?: string;
     guestCount?: number;
+    seatingZone?: string;
     paymentMethod: 'credit_card' | 'line_pay' | 'apple_pay' | 'counter';
     usePoints?: boolean;
   }) => Order;
@@ -366,6 +367,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     address?: string;
     pickupOrDineinTime?: string;
     guestCount?: number;
+    seatingZone?: string;
     paymentMethod: 'credit_card' | 'line_pay' | 'apple_pay' | 'counter';
     usePoints?: boolean;
   }): Order => {
@@ -406,6 +408,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       address: data.address,
       pickupOrDineinTime: data.pickupOrDineinTime,
       guestCount: data.guestCount,
+      seatingZone: data.seatingZone,
       subtotal,
       discount,
       pointsUsed,
